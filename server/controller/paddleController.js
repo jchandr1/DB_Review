@@ -18,6 +18,7 @@ module.exports = {
       })
   },
   createPaddle: (req, res) => {
+    // findOrCreate basically tells the db, 'hey is this in the db? if not then create it, if it is then send them an error'
     db.Paddle.findOrCreate({
       where: {
         speed: req.body.speed,
@@ -26,6 +27,8 @@ module.exports = {
         user_id: req.body.user_id
       }
     })
+    // spread is used because the response sends back two things, the new row it created
+    // if it wasn't found and a boolean indicating whether or not creation was successful
       .spread((newPaddle, created) => {
         if (created) {
           res.status(200).send(newPaddle);
